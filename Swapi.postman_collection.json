@@ -1,0 +1,212 @@
+{
+	"info": {
+		"_postman_id": "f29c2ec4-2a37-437b-9c54-985ac30c4fab",
+		"name": "Swapi",
+		"description": "Swapi Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Planet",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\" : \"Yavin IV\",\n\t\"climate\" : \"temperate, tropical\",\n\t\"terrain\" : \"jungle, rainforests\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Planets List",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Planets From Universe",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/from-universe",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						"from-universe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Planet By Name",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/?name=Yavin",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						""
+					],
+					"query": [
+						{
+							"key": "name",
+							"value": "Yavin"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Planet By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/5e670aecfe2c310d25a59943",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						"5e670aecfe2c310d25a59943"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Planet",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/swapi/v1/planets/5e66e1b29a53a7605d46bdd6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"swapi",
+						"v1",
+						"planets",
+						"5e66e1b29a53a7605d46bdd6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Swapi - Search Planets on Universe",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://swapi.co/api/planets/",
+					"protocol": "https",
+					"host": [
+						"swapi",
+						"co"
+					],
+					"path": [
+						"api",
+						"planets",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

@@ -48,12 +48,30 @@ public class ServiceTests {
                 .thenReturn(myEntity);
 
         Mockito
+                .when(repository.findByName(Mockito.anyString()))
+                .thenReturn(new ArrayList<>());
+
+        Mockito
                 .when(repository.save(Mockito.any()))
                 .thenReturn(new Planet());
 
         Planet response = service.save(getMockedPlanet());
 
         Assert.assertNotNull(response);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void savePlanetAlreadyExists(){
+        ResponseEntity<SwapiPlanetResult> myEntity = new ResponseEntity<>(getMockedSwapiPlanetNoResult(), HttpStatus.OK);
+        Mockito
+                .when(swapiClient.searchPlanetByName(Mockito.anyString()))
+                .thenReturn(myEntity);
+
+        Mockito
+                .when(repository.findByName(Mockito.anyString()))
+                .thenReturn(getMockedPlanetList());
+
+        service.save(getMockedPlanet());
     }
 
     @Test(expected = NotFoundException.class)
@@ -120,9 +138,9 @@ public class ServiceTests {
     @Test
     public void getPlanetByIdOk(){
         Mockito
-                .when(repository.findById(Mockito.anyString()))
+                .when(repository.findById(Mockito.anyLong()))
                 .thenReturn(getMockedOptionalPlanet());
-        Planet response = service.getPlanetById("1a2b3c4d5e6f");
+        Planet response = service.getPlanetById(1L);
 
         Assert.assertNotNull(response);
     }
@@ -130,42 +148,42 @@ public class ServiceTests {
     @Test(expected = NotFoundException.class)
     public void getPlanetByIdNotFound(){
         Mockito
-                .when(repository.findById(Mockito.anyString()))
+                .when(repository.findById(Mockito.anyLong()))
                 .thenReturn(getMockedEmptyOptionalPlanet());
-        Planet response = service.getPlanetById("1a2b3c4d5e6f");
+        Planet response = service.getPlanetById(2L);
 
         Assert.assertNotNull(response);
     }
 
-    @Test(expected = BadRequestException.class)
-    public void getPlanetByIdBadRequest(){
-
-        service.getPlanetById("Earth_quake");
-    }
-
-    @Test(expected = BadRequestException.class)
-    public void getPlanetByIdBadRequestInvalidHexValue(){
-
-        service.getPlanetById("Earthquake");
-    }
+//    @Test(expected = BadRequestException.class)
+//    public void getPlanetByIdBadRequest(){
+//
+//        service.getPlanetById("Earth_quake");
+//    }
+//
+//    @Test(expected = BadRequestException.class)
+//    public void getPlanetByIdBadRequestInvalidHexValue(){
+//
+//        service.getPlanetById("Earthquake");
+//    }
 
     @Test
     public void removePlanetOk(){
         Mockito
-                .when(repository.findById(Mockito.anyString()))
+                .when(repository.findById(Mockito.anyLong()))
                 .thenReturn(getMockedOptionalPlanet());
 
-        Mockito.doNothing().when(repository).deleteById(Mockito.anyString());
-        service.removePlanetFrom("1a2b3c4d5e6f");
+        Mockito.doNothing().when(repository).deleteById(Mockito.anyLong());
+        service.removePlanetFrom(3L);
     }
 
     @Test(expected = NotFoundException.class)
     public void removePlanetNotFound(){
         Mockito
-                .when(repository.findById(Mockito.anyString()))
+                .when(repository.findById(Mockito.anyLong()))
                 .thenThrow(new NotFoundException("Planet Not Found"));
 
-        service.removePlanetFrom("1a2b3c4d5e6f");
+        service.removePlanetFrom(4L);
     }
 
     private SwapiPlanetResult getMockedSwapiPlanetResult(){

@@ -1,0 +1,138 @@
+swagger: "2.0"
+info:
+  description: "This application manage planet from Star Wars Universe."
+  version: "1.0.0"
+  title: "Penunes Swapi"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "petronio.nunes@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:8080"
+basePath: "/swapi/v1"
+tags:
+- name: "planets"
+  description: "Everything you have to know about Star Wars planets"
+schemes:
+- "http"
+paths:
+  /planets:
+    post:
+      tags:
+      - "planets"
+      summary: "Add a new star wars universe planet on application database"
+      description: ""
+      operationId: "createPlanet"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "planet"
+        description: "Planet object that needs to be added to the database"
+        required: true
+        schema:
+          $ref: "#/definitions/Planet"
+      responses:
+        201:
+          description: "Object successfully created"
+        400:
+          description: "Invalid input"
+        404:
+          description: "Planet not found, resend request with a valid planet name"
+    get:
+      tags:
+      - "planets"
+      summary: "List all planets from database"
+      description: "Planet list, retrieve all planets inserted on database. It is possible filter planets by name"
+      operationId: "getPlanets"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "query"
+        description: "Planet name"
+        required: false
+        type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Planet"
+  /planets/{id}:
+    get:
+      tags:
+      - "planets"
+      summary: "Find planet by ID"
+      description: "Returns a single planet"
+      operationId: "getPlanetById"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "ID of planet to return"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Planet"
+        404:
+          description: "Planet not found"
+  
+    delete:
+      tags:
+      - "planets"
+      summary: "Deletes a planet from database"
+      description: ""
+      operationId: "deletePlanetById"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Planet id to delete"
+        required: true
+        type: "integer"
+        format: "int64"
+      responses:
+        404:
+          description: "Planet not found"
+  /planets/from-universe:
+    get:
+      tags:
+      - "planets"
+      summary: "Lists all planets from Star Wars Universe"
+      description: "Lists planets from swapi"
+      operationId: "getPlanetsFromUniverse"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Planet"
+
+definitions:
+  Planet:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      name:
+        type: "string"
+      climate:
+        type: "string"
+      terrain:
+        type: "string"
+      appearance_films:
+        type: "integer"
+        description: "Number of times that planet appearance on star wars films"
