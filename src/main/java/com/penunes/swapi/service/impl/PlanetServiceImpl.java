@@ -9,6 +9,7 @@ import com.penunes.swapi.model.SwapiPlanetResult;
 import com.penunes.swapi.repository.PlanetRepository;
 import com.penunes.swapi.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,18 @@ public class PlanetServiceImpl implements PlanetService {
     @Autowired
     private PlanetRepository repository;
 
+    @Value("${server.host}")
+    private String host;
+
+    @Value("${server.servlet.port}")
+    private String port;
+
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+
+    @Value("${swapi.planet.path}")
+    private String swapiPath;
+
     private final Integer ZERO = 0;
     private final Integer ONE = 1;
 
@@ -43,6 +56,10 @@ public class PlanetServiceImpl implements PlanetService {
             throw new NotFoundException("No planet found for name searched " + planet.getName());
         }
 
+        if(!repository.findByName(planet.getName()).isEmpty()){
+            throw new BadRequestException("Planet already exists -> " + planet.getName());
+        }
+
         if(planetsFromUniverse.getResults().size() > ONE){
             List<String> names = new ArrayList<>();
             planetsFromUniverse.getResults().stream().forEach(result -> names.add(result.getName()));
@@ -51,6 +68,10 @@ public class PlanetServiceImpl implements PlanetService {
 
         SwapiPlanet planetFromUniverse = planetsFromUniverse.getResults().get(ZERO);
         planet.setAppearanceInFilms(planetFromUniverse.getFilms() != null ? planetFromUniverse.getFilms().size() : Integer.valueOf(ZERO));
+
+        Long id = repository.count();
+        planet.setId(++id);
+        planet.setUrl(host + (port.isEmpty() ? "" : ":" + port) + contextPath + "/" + swapiPath + id);
 
         return repository.save(planet);
     }
@@ -116,21 +137,7 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public Planet getPlanetById(String id){
-        Pattern pattern = Pattern.compile("[^a-zA-Z0-9]", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(id);
-
-        if(matcher.find()){
-            throw new BadRequestException("Invalid id, special characters not allowed");
-        }
-
-        pattern = Pattern.compile("[^a-fA-F0-9]", Pattern.CASE_INSENSITIVE);
-        matcher = pattern.matcher(id);
-
-        if(matcher.find()){
-            throw new BadRequestException("Invalid id, invalid hex value");
-        }
-
+    public Planet getPlanetById(Long id){
         Optional<Planet> dbEntity = repository.findById(id);
         if(dbEntity.isPresent()){
             return dbEntity.get();
@@ -140,7 +147,7 @@ public class PlanetServiceImpl implements PlanetService {
     }
 
     @Override
-    public void removePlanetFrom(String id){
+    public void removePlanetFrom(Long id){
         getPlanetById(id);
 
         repository.deleteById(id);

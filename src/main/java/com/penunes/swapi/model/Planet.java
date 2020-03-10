@@ -12,7 +12,7 @@ import javax.validation.constraints.NotBlank;
 public class Planet {
     @Id
     @JsonView(Views.Internal.class)
-    private String id;
+    private Long id;
 
     @NotBlank
     @JsonView(Views.Public.class)
@@ -29,4 +29,7 @@ public class Planet {
     @JsonProperty("appearance_films")
     @JsonView(Views.Public.class)
     private Integer appearanceInFilms;
+
+    @JsonView(Views.Public.class)
+    private String url;
 }

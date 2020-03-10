@@ -11,6 +11,6 @@ public interface PlanetService {
     List<Planet> getPlanets();
     List<Planet> getPlanetsFromUniverse();
     List<Planet> getPlanetsByName(String name);
-    Planet getPlanetById(String id);
-    void removePlanetFrom(String id);
+    Planet getPlanetById(Long id);
+    void removePlanetFrom(Long id);
 }

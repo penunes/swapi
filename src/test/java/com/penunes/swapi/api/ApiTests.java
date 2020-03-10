@@ -86,10 +86,10 @@ public class ApiTests {
         Planet mockedPlanet = getMockedPlanet();
 
         Mockito
-                .when(service.getPlanetById(Mockito.anyString()))
+                .when(service.getPlanetById(Mockito.anyLong()))
                 .thenReturn(mockedPlanet);
 
-        Planet response = controller.getPlanetById("a122");
+        Planet response = controller.getPlanetById(5L);
 
         Assert.assertNotNull(response);
     }
@@ -97,9 +97,9 @@ public class ApiTests {
     @Test
     public void deletePlanetOk(){
         Mockito.doNothing()
-                .when(service).removePlanetFrom(Mockito.anyString());
+                .when(service).removePlanetFrom(Mockito.anyLong());
 
-        controller.deletePlanetById("a122");
+        controller.deletePlanetById(6L);
     }
 
     Planet getMockedPlanet(){

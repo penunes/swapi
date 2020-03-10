@@ -21,6 +21,7 @@ public class SwapiApi {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @JsonView(Views.Public.class)
     public Planet createPlanet(@Valid @RequestBody Planet planet){
         return planetService.save(planet);
     }
@@ -34,6 +35,7 @@ public class SwapiApi {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @JsonView(Views.Public.class)
     public List<Planet> getPlanetsByName(@RequestParam Optional<String> name){
         if(name.isPresent()){
             return planetService.getPlanetsByName(name.get());
@@ -44,13 +46,14 @@ public class SwapiApi {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Planet getPlanetById(@PathVariable String id){
+    @JsonView(Views.Public.class)
+    public Planet getPlanetById(@PathVariable Long id){
         return planetService.getPlanetById(id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePlanetById(@PathVariable String id){
+    public void deletePlanetById(@PathVariable Long id){
         planetService.removePlanetFrom(id);
     }
 
